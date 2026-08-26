@@ -12,7 +12,7 @@ public class EnemyKillzone : MonoBehaviour
 
     [Header("필터")]
     [SerializeField] private bool _useTagFilter = true;
-    [SerializeField] private string _targetTag = "PoolEnemy";
+    [SerializeField] private string _targetTag = "Enemy";
 
     [Header("로그")]
     [SerializeField] private bool _printLog = true;
