@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
-using UnityEngine.UI;
 
 public class WaveSpawner : MonoBehaviour
 {
@@ -33,7 +32,7 @@ public class WaveSpawner : MonoBehaviour
         }
 
         // UI
-        _WaveCountdownText.text = Mathf.Round(_countdown).ToString();
+        _WaveCountdownText.text = Mathf.CeilToInt(_countdown).ToString();
     }
 
     // 코루틴을 사용해 적 객체가 겹처서 스폰되는 것을 딜레이 타입을 주어 해결 
