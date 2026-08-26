@@ -52,6 +52,7 @@ public class EnemyMove : MonoBehaviour
         if( _wavePointIndex >= WayPoints._points.Length - 1)
         {
             CPrint.Log("베이스 캠프 도착 이동 종료");
+            // 임시 오브젝츠 풀과 킬존을 만들면 수정 필요
             Destroy(gameObject);
             return;
         }
