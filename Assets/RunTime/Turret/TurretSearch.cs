@@ -4,21 +4,31 @@ using UnityEngine;
 
 public class TurretSearch : MonoBehaviour
 {
-    #region 인스펙터
+    #region 인스펙터 (설정)
     [Header("타겟")]
     [SerializeField] private Transform _target;
 
     [Header("태그")]
     [SerializeField] private string _targetTag = "Enemy";
 
-    [Header("회전")]
+    [Header("포탑 회전, 회전 속도")]
     [SerializeField] private Transform _turretRotation;
-
-    [Header("속도")]
     [SerializeField] private float _turretSpeed = 10f;
 
+    [Header("총알 설정")]
+    [SerializeField] private GameObject _bulletPrefab;
+    [SerializeField] private Transform _firePoint;
+    #endregion
+
+    #region 인스펙터 (포탑 설정)
     [Header("범위")]
     [SerializeField] private float _range = 15f;
+
+    [Header("발사 속도")]
+    [SerializeField] private float _fireRate = 1f;
+
+    [Header("발사 까지 걸리는 시간")]
+    [SerializeField] private float _fireCountdown = 0f;
     #endregion
 
     void Start()
@@ -70,6 +80,7 @@ public class TurretSearch : MonoBehaviour
             return;
         }
 
+        // 타겟 록 온
         // 방향
         Vector3 dir = _target.position - transform.position;
         Quaternion lookRotation = Quaternion.LookRotation(dir);
@@ -78,6 +89,19 @@ public class TurretSearch : MonoBehaviour
         // 회전
         _turretRotation.rotation = Quaternion.Euler(0f, rotation.y, 0f);
 
+        // 발사
+        if(_fireCountdown <= 0f)
+        {
+            Shoot();
+            _fireCountdown = 1f / _fireRate;
+        }
+
+        _fireCountdown -= Time.deltaTime;
+    }
+
+    private void Shoot()
+    {
+       GameObject bulletGo = Instantiate(_bulletPrefab, _firePoint.position, _firePoint.rotation);
     }
 
     private void OnDrawGizmosSelected()
