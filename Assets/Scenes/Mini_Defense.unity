@@ -10276,6 +10276,11 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 6943558277685692639, guid: 14bc76551a2b37144b4c0f332dd1ea3b, type: 3}
   m_PrefabInstance: {fileID: 1469579198}
   m_PrefabAsset: {fileID: 0}
+--- !u!4 &1471120127 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 5399220061175895712, guid: 8fd5cf0fab2363e448f2fcc61374bf8e, type: 3}
+  m_PrefabInstance: {fileID: 4160341013510446676}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &1485657000
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -15290,7 +15295,7 @@ GameObject:
   - component: {fileID: 2138519570}
   - component: {fileID: 2138519571}
   m_Layer: 0
-  m_Name: GameManager
+  m_Name: EnemyObjectPool
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -15535,6 +15540,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _target: {fileID: 2343810016085978892, guid: dbe9455da56fff645afe6c0028baf968, type: 3}
   _targetTag: Enemy
+  _turretRotation: {fileID: 1471120127}
   _range: 15
 --- !u!1001 &4160341013510446676
 PrefabInstance:
@@ -15668,6 +15674,6 @@ SceneRoots:
   - {fileID: 964563870}
   - {fileID: 570786024}
   - {fileID: 2138519570}
-  - {fileID: 288087925}
   - {fileID: 1380636265}
+  - {fileID: 288087925}
   - {fileID: 4160341013510446676}
