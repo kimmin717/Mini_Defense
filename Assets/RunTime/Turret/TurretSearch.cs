@@ -11,17 +11,21 @@ public class TurretSearch : MonoBehaviour
     [Header("태그")]
     [SerializeField] private string _targetTag = "Enemy";
 
+    [Header("회전")]
+    [SerializeField] private Transform _turretRotation;
+
+    [Header("속도")]
+    [SerializeField] private float _turretSpeed = 10f;
+
     [Header("범위")]
     [SerializeField] private float _range = 15f;
     #endregion
 
     void Start()
-    {
-        if(_target == null)
+    {    
+        if(_turretRotation == null)
         {
-            CPrint.Warn("Target 없음 확인 필요");
-
-            return;
+            CPrint.Warn("회전 설정 확인 필요");
         }
 
         // nameof : 변수, 클래스, 메서드 등의 이름(식별자)을 문자열(String)로 변환해 주는 C#의 연산자
@@ -31,15 +35,16 @@ public class TurretSearch : MonoBehaviour
     private void UpdateTarget()
     {
         GameObject[] enemys = GameObject.FindGameObjectsWithTag(_targetTag);
+        // 이부분 정리 할 것
         float shortestDistance = Mathf.Infinity;
         GameObject nearestEnemt = null;
 
-        // 프렌치 말고 다른거 쓸수 없나?
-        foreach (GameObject enemy in enemys)
-        { 
+        for (int i = 0; i < enemys.Length; i++)
+        {
+            GameObject enemy = enemys[i]; 
             float distanceToEnemy = Vector3.Distance(transform.position, enemy.transform.position);
 
-            if(distanceToEnemy < shortestDistance)
+            if (distanceToEnemy < shortestDistance)
             {
                 shortestDistance = distanceToEnemy;
                 nearestEnemt = enemy;
@@ -65,7 +70,13 @@ public class TurretSearch : MonoBehaviour
             return;
         }
 
-
+        // 방향
+        Vector3 dir = _target.position - transform.position;
+        Quaternion lookRotation = Quaternion.LookRotation(dir);
+        // 부드럽게 적 추격
+        Vector3 rotation = Quaternion.Lerp(_turretRotation.rotation, lookRotation, Time.deltaTime * _turretSpeed).eulerAngles;
+        // 회전
+        _turretRotation.rotation = Quaternion.Euler(0f, rotation.y, 0f);
 
     }
 
