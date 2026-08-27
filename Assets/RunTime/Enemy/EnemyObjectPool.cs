@@ -211,6 +211,7 @@ public class EnemyObjectPool : MonoBehaviour
                 continue;
             }
 
+            // 이부분 체력 감소 로직으로 추가하면
             //_lifeMap[enemy] -= Time.deltaTime;
 
             if (_lifeMap[enemy] < 0.0f)
