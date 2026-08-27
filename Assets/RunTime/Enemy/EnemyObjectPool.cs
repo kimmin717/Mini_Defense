@@ -211,7 +211,7 @@ public class EnemyObjectPool : MonoBehaviour
                 continue;
             }
 
-            _lifeMap[enemy] -= Time.deltaTime;
+            //_lifeMap[enemy] -= Time.deltaTime;
 
             if (_lifeMap[enemy] < 0.0f)
             {
@@ -245,7 +245,7 @@ public class EnemyObjectPool : MonoBehaviour
 
         // 풀 안에서는 루트 하위에 정리되어 있다.
         enemy.transform.SetParent(null);
-        Instantiate(_enemyPrefab, _spawnPoint.position, Quaternion.identity);
+        enemy.transform.SetPositionAndRotation( _spawnPoint.position, Quaternion.identity);
 
         // 풀에서 꺼낸 객체를 다시 사용
         enemy.SetActive(true);

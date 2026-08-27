@@ -102,10 +102,10 @@ public class EnemyKillzone : MonoBehaviour
 
                 return;
             }
-            
+
         }
 
-        if(_printLog)
+        if (_printLog)
         {
             CPrint.Group("킬존 진입", () =>
             {
