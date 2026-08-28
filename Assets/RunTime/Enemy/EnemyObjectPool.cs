@@ -21,10 +21,6 @@ public class EnemyObjectPool : MonoBehaviour
     [Header("입력")]
     [SerializeField] private KeyCode _clearKey = KeyCode.Backspace;
 
-    [Header("체력 설정(수명)")]
-    [Min(0.1f)]
-    [SerializeField] private float _enemyHP = 10.0f;
-
     [Header("UI")]
     [SerializeField] private TextMeshProUGUI _WaveCountdownText;
     #endregion
@@ -163,19 +159,6 @@ public class EnemyObjectPool : MonoBehaviour
 
     }
 
-    private void RemoveLifeIfExists(GameObject enemy)
-    { 
-        if(enemy == null)
-        { 
-            return; 
-        }
-
-        if(_lifeMap.ContainsKey(enemy))
-        {
-            _lifeMap.Remove(enemy);
-        }
-    }
-
     private void UpdateAliveEnemy()
     {
         for (int i = _aliveEnemy.Count - 1; i >= 0; i--)
@@ -193,32 +176,10 @@ public class EnemyObjectPool : MonoBehaviour
             {
                 ReturnToPool(enemy);
                 _aliveEnemy.RemoveAt(i);
-                RemoveLifeIfExists(enemy);
 
                 CPrint.Once("킬존 리사이클", "비활성화된 Enemy를 다시 풀로 회수");
 
                 continue;
-            }
-
-            if(!_lifeMap.ContainsKey(enemy))
-            {
-                CPrint.Warn($"라이프 정보 없음 : {enemy.name}");
-
-                ReturnToPool(enemy);
-
-                _aliveEnemy.RemoveAt(i);
-
-                continue;
-            }
-
-            // 이부분 체력 감소 로직으로 추가하면
-            //_lifeMap[enemy] -= Time.deltaTime;
-
-            if (_lifeMap[enemy] < 0.0f)
-            {
-                ReturnToPool(enemy);
-                _aliveEnemy.RemoveAt(i);
-                _lifeMap.Remove(enemy);
             }
 
         }
@@ -261,11 +222,12 @@ public class EnemyObjectPool : MonoBehaviour
             CPrint.Warn($"중복 스폰 감지 : {enemy.name}");
         }
 
-        _lifeMap[enemy] = _enemyHP;
+        
 
         CPrint.Log($"스폰 : {enemy.name} / Alive = {_aliveEnemy.Count} / Pool = {_pool.Count}");
-
+   
     }
+
 
 
 }

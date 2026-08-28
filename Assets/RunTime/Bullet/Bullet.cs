@@ -12,20 +12,29 @@ public class Bullet : MonoBehaviour
     [Header("속도")]
     [SerializeField] private float _speed = 70f;
 
+    [Header("데미지")]
+    [SerializeField] private float _damage = 10f;
+
     [Header("임팩트")]
-    [SerializeField] private GameObject _BulletImpact;
+    [SerializeField] private BulletImpactObjectPool _impactPool;
     #endregion
 
-    public void Seek(Transform target)
+    private void OnEnable()
+    {
+        _target = null;
+    }
+
+    public void Seek(Transform target, BulletImpactObjectPool impactPool)
     {
         _target = target;
+        _impactPool = impactPool;
     }
 
     void Update()
     {
         if (_target == null)
         {
-            Destroy(gameObject);
+            gameObject.SetActive(false);
             return;
         }
         
@@ -44,12 +53,23 @@ public class Bullet : MonoBehaviour
 
     private void HitTarget()
     {
-        // 오브젝트 풀 만들어서 해결해야지
+        if (_impactPool != null)
+        {
+            _impactPool.SpawnImpact(transform.position, transform.rotation);
+        }
 
-        GameObject effectIns = Instantiate(_BulletImpact, transform.position, transform.rotation);
-        Destroy(effectIns, 2f);
+        // 데미지 매커니즘 
+        if (_target != null)
+        {
+            Enemy enemy = _target.GetComponent<Enemy>();
 
-        Destroy(_target.gameObject);
-        Destroy(gameObject);
+            if(enemy != null)
+            {
+                enemy.TakeDamage(_damage);
+            }
+
+        }
+
+        gameObject.SetActive(false);
     }
 }

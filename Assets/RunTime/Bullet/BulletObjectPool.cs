@@ -8,11 +8,12 @@ public class BulletObjectPool : MonoBehaviour
     [Header("프리팹")]
     [SerializeField] private GameObject _bulletPrefab = null;
 
-    [Header("스폰 위치")]
-    [SerializeField] protected Transform _spawnPoint = null;
-
     [Header("오브젝트 풀")]
-    [SerializeField] protected int _prewarmCount = 60;
+    [SerializeField] private int _prewarmCount = 60;
+
+    [Header("수명 시간")]
+    [Min(0.1f)]
+    [SerializeField] private float _lifeTime = 10f;
     #endregion
 
     #region 내부변수
@@ -32,14 +33,6 @@ public class BulletObjectPool : MonoBehaviour
             return;
         }
 
-        if( _spawnPoint == null)
-        {
-            CPrint.Warn("SpawnPoint 확인 필요");
-
-            enabled = false;
-            return;
-        }
-
         CreatePoolRoot();
         Prewarm();
     }
@@ -47,7 +40,7 @@ public class BulletObjectPool : MonoBehaviour
     
     void Update()
     {
-        
+        UpdateAliveBullet();
     }
 
     private void CreatePoolRoot()
@@ -57,7 +50,7 @@ public class BulletObjectPool : MonoBehaviour
             return;
         }
 
-        GameObject root = new GameObject("EnemyPool_Root");
+        GameObject root = new GameObject("BulletPool_Root");
 
         _poolRoot = root.transform;
     }
@@ -140,8 +133,7 @@ public class BulletObjectPool : MonoBehaviour
                 continue;
             }
 
-            // 이부분 체력 감소 로직으로 추가하면
-            //_lifeMap[enemy] -= Time.deltaTime;
+            _lifeMap[bullet] -= Time.deltaTime;
 
             if (_lifeMap[bullet] < 0.0f)
             {
@@ -157,25 +149,25 @@ public class BulletObjectPool : MonoBehaviour
     {
         if (_pool.Count > 0)
         {
-            GameObject enemy = _pool.Dequeue();
+            GameObject bullet = _pool.Dequeue();
 
-            return enemy;
+            return bullet;
         }
 
-        GameObject bullet = Instantiate(_bulletPrefab);
+        GameObject extra = Instantiate(_bulletPrefab);
 
         CPrint.Once("풀 확장", "오브젝트를 추가 생성");
 
-        return bullet;
+        return extra;
     }
 
-    private void SpawnEnemy()
+    public GameObject SpawnBullet(Vector3 position, Quaternion rotation)
     {
         GameObject bullet = GetBulletFromPool();
 
         // 풀 안에서는 루트 하위에 정리되어 있다.
         bullet.transform.SetParent(null);
-        bullet.transform.SetPositionAndRotation(_spawnPoint.position, Quaternion.identity);
+        bullet.transform.SetPositionAndRotation(position, rotation);
 
         // 풀에서 꺼낸 객체를 다시 사용
         bullet.SetActive(true);
@@ -190,9 +182,10 @@ public class BulletObjectPool : MonoBehaviour
             CPrint.Warn($"중복 스폰 감지 : {bullet.name}");
         }
 
-   
+        _lifeMap[bullet] = _lifeTime;
 
         CPrint.Log($"스폰 : {bullet.name} / Alive = {_aliveBullet.Count} / Pool = {_pool.Count}");
 
+        return bullet;
     }
 }

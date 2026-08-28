@@ -15,9 +15,15 @@ public class TurretSearch : MonoBehaviour
     [SerializeField] private Transform _turretRotation;
     [SerializeField] private float _turretSpeed = 10f;
 
+    [Header("발사 위치")]
+    [SerializeField] private Transform _firePoint;
+
     [Header("총알 설정")]
     [SerializeField] private GameObject _bulletPrefab;
-    [SerializeField] private Transform _firePoint;
+
+    [Header("오브젝트 풀 참조")]
+    [SerializeField] private BulletObjectPool _bulletPool;
+    [SerializeField] private BulletImpactObjectPool _impactPool;
     #endregion
 
     #region 인스펙터 (포탑 설정)
@@ -101,12 +107,24 @@ public class TurretSearch : MonoBehaviour
 
     private void Shoot()
     {
-        GameObject bulletGo = Instantiate(_bulletPrefab, _firePoint.position, _firePoint.rotation);
+        if (_bulletPool == null)
+        {
+            CPrint.Warn("BulletPool 연결되어 있지 않습니다.");
+            return;
+        }
+
+        GameObject bulletGo = _bulletPool.SpawnBullet(_firePoint.position, _firePoint.rotation);
+
+        if (bulletGo == null)
+        {
+            return;
+        }
+
         Bullet bullet = bulletGo.GetComponent<Bullet>();
 
         if (bullet != null)
         {
-            bullet.Seek(_target);
+            bullet.Seek(_target, _impactPool);
         }
     }
 

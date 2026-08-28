@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class EnemyMove : MonoBehaviour
+public class Enemy : MonoBehaviour
 {
     #region 인스펙터
     [Header("타겟")]
@@ -12,9 +12,28 @@ public class EnemyMove : MonoBehaviour
     [SerializeField] private float _moveSpeed = 10f;
     [SerializeField] private int _wavePointIndex = 0;
 
-    // 여기에 체력 괄련해서 무언가를 만들고
-
+    [Header("체력 설정")]
+    [Min(0.1f)]
+    [SerializeField] private float _enemyHP = 10f;
     #endregion
+
+    #region 내부변수
+    private float _temporaryHP;
+    #endregion
+
+    private void OnEnable()
+    {
+        // 체력 초기화
+        _temporaryHP = _enemyHP;
+
+        // 위치 초기화
+        _wavePointIndex = 0;
+
+        if (WayPoints._points != null && WayPoints._points.Length > 0)
+        {
+            _target = WayPoints._points[0];
+        }
+    }
 
     void Start()
     {
@@ -57,6 +76,25 @@ public class EnemyMove : MonoBehaviour
         // 배열의 인덱스를 높여 다음 장소로 이동하개 하는 것
         _wavePointIndex++;
         _target = WayPoints._points[_wavePointIndex];
+
+
+    }
+
+    public void TakeDamage(float amount)
+    {
+        _temporaryHP -= amount;
+
+        CPrint.Log($"{gameObject.name} 피격! 남은 HP : {_temporaryHP}");
+
+        if (_temporaryHP <= 0f)
+        {
+            Die();
+        }
+    }
+
+    private void Die()
+    {
+        gameObject.SetActive(false);
     }
 
 }
