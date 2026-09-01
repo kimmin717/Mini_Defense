@@ -2,24 +2,23 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-// 변수 명 변경해야 함
 public class LaserImpactObjectPool : MonoBehaviour
 {
     public static LaserImpactObjectPool _instance;
 
     #region 인스팩터
     [Header("프리팹")]
-    [SerializeField] private GameObject _bulletImpactPrefab;
+    [SerializeField] private GameObject _laserImpactPrefab;
 
     [Header("오브젝트 풀")]
-    [SerializeField] private int _bulletImpactCount = 60;
+    [SerializeField] private int _laserImpactCount = 60;
 
     [Header("이펙트 유지 시간")]
-    [SerializeField] private float _bulletImpactLifeTime = 2f;
+    [SerializeField] private float _laserImpactLifeTime = 2f;
     #endregion
 
     #region 내부변수
-    private readonly List<GameObject> _aliveBulletImpact = new List<GameObject>();
+    private readonly List<GameObject> _aliveLaserImpact = new List<GameObject>();
     private readonly Dictionary<GameObject, float> _lifeMap = new Dictionary<GameObject, float>();
     private readonly Queue<GameObject> _pool = new Queue<GameObject>();
     private Transform _poolRoot;
@@ -29,7 +28,7 @@ public class LaserImpactObjectPool : MonoBehaviour
     {
         if (_instance != null)
         {
-            CPrint.Warn("BulletImpactObjectPool이 씬에 하나더 존재함 확인 필요");
+            CPrint.Warn("LaserImpactObjectPool이 씬에 하나더 존재함 확인 필요");
             return;
         }
 
@@ -38,9 +37,9 @@ public class LaserImpactObjectPool : MonoBehaviour
 
     void Start()
     {
-        if (_bulletImpactPrefab == null)
+        if (_laserImpactPrefab == null)
         {
-            CPrint.Warn("BulletImpactPrefab 인스팩터 확인 필요");
+            CPrint.Warn("LaserImpactPrefab 인스팩터 확인 필요");
 
             enabled = false;
             return;
@@ -53,7 +52,7 @@ public class LaserImpactObjectPool : MonoBehaviour
 
     void Update()
     {
-        UpdateAliveBulletImpact();
+        UpdateAliveLaserImpact();
     }
 
     private void CreatePoolRoot()
@@ -63,111 +62,111 @@ public class LaserImpactObjectPool : MonoBehaviour
             return;
         }
 
-        GameObject root = new GameObject("BulletImpactPool_Root");
+        GameObject root = new GameObject("LaserImpactPool_Root");
 
         _poolRoot = root.transform;
     }
 
     private void Prewarm()
     {
-        for (int i = 0; i < _bulletImpactCount; i++)
+        for (int i = 0; i < _laserImpactCount; i++)
         {
 
-            GameObject bullet = Instantiate(_bulletImpactPrefab, _poolRoot);
+            GameObject laser = Instantiate(_laserImpactPrefab, _poolRoot);
 
-            bullet.SetActive(false);
+            laser.SetActive(false);
 
-            _pool.Enqueue(bullet);
+            _pool.Enqueue(laser);
         }
 
-        CPrint.Success($"BulletImpactCount = {_bulletImpactCount}");
+        CPrint.Success($"LaserImpactCount = {_laserImpactCount}");
 
     }
 
-    private void ReturnToPool(GameObject bulletImpact)
+    private void ReturnToPool(GameObject laserImpact)
     {
-        if (bulletImpact == null)
+        if (laserImpact == null)
         {
             return;
         }
 
-        bulletImpact.SetActive(false);
+        laserImpact.SetActive(false);
 
-        bulletImpact.transform.SetParent(_poolRoot);
+        laserImpact.transform.SetParent(_poolRoot);
 
-        _pool.Enqueue(bulletImpact);
+        _pool.Enqueue(laserImpact);
     }
 
-    private void RemoveLifeIfExists(GameObject bulletImpact)
+    private void RemoveLifeIfExists(GameObject laserImpact)
     {
-        if (bulletImpact == null)
+        if (laserImpact == null)
         {
             return;
         }
 
-        if (_lifeMap.ContainsKey(bulletImpact))
+        if (_lifeMap.ContainsKey(laserImpact))
         {
-            _lifeMap.Remove(bulletImpact);
+            _lifeMap.Remove(laserImpact);
         }
     }
 
-    private void UpdateAliveBulletImpact()
+    private void UpdateAliveLaserImpact()
     {
-        for (int i = _aliveBulletImpact.Count - 1; i >= 0; i--)
+        for (int i = _aliveLaserImpact.Count - 1; i >= 0; i--)
         {
-            GameObject bulletImpact = _aliveBulletImpact[i];
+            GameObject laserImpact = _aliveLaserImpact[i];
 
-            if (bulletImpact == null)
+            if (laserImpact == null)
             {
-                _aliveBulletImpact.RemoveAt(i);
+                _aliveLaserImpact.RemoveAt(i);
 
                 continue;
             }
 
-            if (!bulletImpact.activeSelf)
+            if (!laserImpact.activeSelf)
             {
-                ReturnToPool(bulletImpact);
-                _aliveBulletImpact.RemoveAt(i);
-                RemoveLifeIfExists(bulletImpact);
+                ReturnToPool(laserImpact);
+                _aliveLaserImpact.RemoveAt(i);
+                RemoveLifeIfExists(laserImpact);
 
-                CPrint.Once("킬존 리사이클", "비활성화된 BulletImpact를 다시 풀로 회수");
+                CPrint.Once("킬존 리사이클", "비활성화된 LaserImpact를 다시 풀로 회수");
 
                 continue;
             }
 
-            if (!_lifeMap.ContainsKey(bulletImpact))
+            if (!_lifeMap.ContainsKey(laserImpact))
             {
-                CPrint.Warn($"라이프 정보 없음 : {bulletImpact.name}");
+                CPrint.Warn($"라이프 정보 없음 : {laserImpact.name}");
 
-                ReturnToPool(bulletImpact);
+                ReturnToPool(laserImpact);
 
-                _aliveBulletImpact.RemoveAt(i);
+                _aliveLaserImpact.RemoveAt(i);
 
                 continue;
             }
 
-            _lifeMap[bulletImpact] -= Time.deltaTime;
+            _lifeMap[laserImpact] -= Time.deltaTime;
 
-            if (_lifeMap[bulletImpact] < 0.0f)
+            if (_lifeMap[laserImpact] < 0.0f)
             {
-                ReturnToPool(bulletImpact);
-                _aliveBulletImpact.RemoveAt(i);
-                _lifeMap.Remove(bulletImpact);
+                ReturnToPool(laserImpact);
+                _aliveLaserImpact.RemoveAt(i);
+                _lifeMap.Remove(laserImpact);
             }
 
         }
     }
 
-    private GameObject GetBulletImpactFromPool()
+    private GameObject GetLaserImpactFromPool()
     {
         if (_pool.Count > 0)
         {
-            GameObject bulletImpact = _pool.Dequeue();
+            GameObject laserImpact = _pool.Dequeue();
 
-            return bulletImpact;
+            return laserImpact;
         }
 
-        GameObject extra = Instantiate(_bulletImpactPrefab);
+        GameObject extra = Instantiate(_laserImpactPrefab);
 
         CPrint.Once("풀 확장", "오브젝트를 추가 생성");
 
@@ -177,15 +176,15 @@ public class LaserImpactObjectPool : MonoBehaviour
     public GameObject SpawnImpact(Vector3 position, Quaternion rotation)
     {
         // 풀에서 이펙트 가져오기
-        GameObject bulletImpact = GetBulletImpactFromPool();
+        GameObject laserImpact = GetLaserImpactFromPool();
 
         // 전달받은 위치/회전값으로 설정
-        bulletImpact.transform.SetPositionAndRotation(position, rotation);
-        bulletImpact.SetActive(true);
+        laserImpact.transform.SetPositionAndRotation(position, rotation);
+        laserImpact.SetActive(true);
 
-        _aliveBulletImpact.Add(bulletImpact);
-        _lifeMap[bulletImpact] = _bulletImpactLifeTime;
+        _aliveLaserImpact.Add(laserImpact);
+        _lifeMap[laserImpact] = _laserImpactLifeTime;
 
-        return bulletImpact;
+        return laserImpact;
     }
 }

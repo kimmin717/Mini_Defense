@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class LaserTurret : MonoBehaviour
+public class MissileTurret : MonoBehaviour
 {
-    #region 인스펙터
+    #region 인스펙터 (설정)
     [Header("타겟")]
     [SerializeField] private Transform _target;
 
@@ -19,20 +19,20 @@ public class LaserTurret : MonoBehaviour
     [SerializeField] private Transform _firePoint;
     #endregion
 
-    #region 인스펙터(포탑 설정)
+    #region 인스펙터 (포탑 설정)
     [Header("범위")]
-    [SerializeField] private float _range = 20f;
+    [SerializeField] private float _range = 30f;
 
     [Header("발사 속도")]
-    [SerializeField] private float _fireRate = 1.5f;
+    [SerializeField] private float _fireRate = 0.25f;
 
     [Header("발사 간격")]
-    [SerializeField] private float _fireCountdown = 1f;
+    [SerializeField] private float _fireCountdown = 2f;
     #endregion
 
     void Start()
     {
-        if(_turretRotation == null)
+        if (_turretRotation == null)
         {
             CPrint.Warn("회전 설정 확인 필요");
         }
@@ -40,11 +40,9 @@ public class LaserTurret : MonoBehaviour
         InvokeRepeating(nameof(UpdateTarget), 0f, 0.5f);
     }
 
-
     private void UpdateTarget()
     {
         GameObject[] enemys = GameObject.FindGameObjectsWithTag(_targetTag);
-        // 이부분 정리 할 것
         float shortestDistance = Mathf.Infinity;
         GameObject nearestEnemt = null;
 
@@ -97,27 +95,25 @@ public class LaserTurret : MonoBehaviour
 
     private void Shoot()
     {
-        // 블릿 오브젝트 풀 수정 필요
-        GameObject LaserGo = LaserObjectPool._instance.SpawnLaser(_firePoint.position, _firePoint.rotation);
+        GameObject missileGo = MissileObjectPool._instance.SpawnMissile(_firePoint.position, _firePoint.rotation);
 
-        if (LaserGo == null)
+        if (missileGo == null)
         {
             return;
         }
 
-        Laser Lsser = LaserGo.GetComponent<Laser>();
+        Missile missile = missileGo.GetComponent<Missile>();
 
-        if (Lsser != null)
+        if (missile != null)
         {
-            // 블릿 오브젝트 풀 수정 필요
-            Lsser.Seek(_target, LaserImpactObjectPool._instance);
+            missile.Seek(_target, MissileImpactObjectPool._instance);
         }
     }
 
     private void OnDrawGizmosSelected()
     {
+        // 원형으로 범위를 보여줌
         Gizmos.color = Color.red;
         Gizmos.DrawWireSphere(transform.position, _range);
     }
 }
-

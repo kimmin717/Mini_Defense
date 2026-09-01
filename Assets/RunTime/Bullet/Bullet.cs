@@ -4,7 +4,6 @@ using UnityEngine;
 
 public class Bullet : MonoBehaviour
 {
-
     #region 인스펙터
     [Header("타겟")]
     [SerializeField] private Transform _target;

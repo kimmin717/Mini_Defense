@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Laser : MonoBehaviour
+public class Missile : MonoBehaviour
 {
     #region 인스펙터
     [Header("타겟")]
@@ -12,10 +12,10 @@ public class Laser : MonoBehaviour
     [SerializeField] private float _speed = 80f;
 
     [Header("데미지")]
-    [SerializeField] private float _damage = 15f;
+    [SerializeField] private float _damage = 20f;
 
     [Header("임팩트")]
-    [SerializeField] private LaserImpactObjectPool _impactPool;
+    [SerializeField] private MissileImpactObjectPool _impactPool;
     #endregion
 
     private void OnEnable()
@@ -23,7 +23,7 @@ public class Laser : MonoBehaviour
         _target = null;
     }
 
-    public void Seek(Transform target, LaserImpactObjectPool impactPool)
+    public void Seek(Transform target, MissileImpactObjectPool impactPool)
     {
         _target = target;
         _impactPool = impactPool;
@@ -71,4 +71,5 @@ public class Laser : MonoBehaviour
 
         gameObject.SetActive(false);
     }
+
 }
