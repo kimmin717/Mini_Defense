@@ -2,9 +2,10 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class BulletImpactObjectPool : MonoBehaviour
+// 변수 명 변경해야 함
+public class LaserImpactObjectPool : MonoBehaviour
 {
-    public static BulletImpactObjectPool _instance;
+    public static LaserImpactObjectPool _instance;
 
     #region 인스팩터
     [Header("프리팹")]
@@ -26,7 +27,7 @@ public class BulletImpactObjectPool : MonoBehaviour
 
     private void Awake()
     {
-        if( _instance != null )
+        if (_instance != null)
         {
             CPrint.Warn("BulletImpactObjectPool이 씬에 하나더 존재함 확인 필요");
             return;
@@ -37,7 +38,7 @@ public class BulletImpactObjectPool : MonoBehaviour
 
     void Start()
     {
-        if(_bulletImpactPrefab == null)
+        if (_bulletImpactPrefab == null)
         {
             CPrint.Warn("BulletImpactPrefab 인스팩터 확인 필요");
 
@@ -49,7 +50,7 @@ public class BulletImpactObjectPool : MonoBehaviour
         Prewarm();
     }
 
-    
+
     void Update()
     {
         UpdateAliveBulletImpact();
@@ -187,5 +188,4 @@ public class BulletImpactObjectPool : MonoBehaviour
 
         return bulletImpact;
     }
-
 }

@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class TurretSearch : MonoBehaviour
+public class StandardTurret : MonoBehaviour
 {
     #region 인스펙터 (설정)
     [Header("타겟")]
@@ -17,13 +17,6 @@ public class TurretSearch : MonoBehaviour
 
     [Header("발사 위치")]
     [SerializeField] private Transform _firePoint;
-
-    [Header("총알 설정")]
-    [SerializeField] private GameObject _bulletPrefab;
-
-    [Header("오브젝트 풀 참조")]
-    [SerializeField] private BulletObjectPool _bulletPool;
-    [SerializeField] private BulletImpactObjectPool _impactPool;
     #endregion
 
     #region 인스펙터 (포탑 설정)
@@ -33,7 +26,7 @@ public class TurretSearch : MonoBehaviour
     [Header("발사 속도")]
     [SerializeField] private float _fireRate = 1f;
 
-    [Header("발사 까지 걸리는 시간")]
+    [Header("발사 간격")]
     [SerializeField] private float _fireCountdown = 0f;
     #endregion
 
@@ -107,13 +100,7 @@ public class TurretSearch : MonoBehaviour
 
     private void Shoot()
     {
-        if (_bulletPool == null)
-        {
-            CPrint.Warn("BulletPool 연결되어 있지 않습니다.");
-            return;
-        }
-
-        GameObject bulletGo = _bulletPool.SpawnBullet(_firePoint.position, _firePoint.rotation);
+        GameObject bulletGo = BulletObjectPool._instance.SpawnBullet(_firePoint.position, _firePoint.rotation);
 
         if (bulletGo == null)
         {
@@ -124,7 +111,7 @@ public class TurretSearch : MonoBehaviour
 
         if (bullet != null)
         {
-            bullet.Seek(_target, _impactPool);
+            bullet.Seek(_target, BulletImpactObjectPool._instance);
         }
     }
 

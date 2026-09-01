@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class BulletObjectPool : MonoBehaviour
 {
+    public static BulletObjectPool _instance;
+
     #region 인터펙스
     [Header("프리팹")]
     [SerializeField] private GameObject _bulletPrefab = null;
@@ -22,6 +24,17 @@ public class BulletObjectPool : MonoBehaviour
     private readonly Queue<GameObject> _pool = new Queue<GameObject>();
     private Transform _poolRoot;
     #endregion
+
+    private void Awake()
+    {
+        if (_instance != null)
+        {
+            CPrint.Warn("BulletObjectPool이 씬에 하나더 존재함 확인 필요");
+            return;
+        }
+
+        _instance = this;
+    }
 
     void Start()
     {
