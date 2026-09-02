@@ -7,8 +7,14 @@ public class BuildManager : MonoBehaviour
     // 싱글턴
     public static BuildManager _instance;
 
-    [Header("포탑")]
-    [SerializeField] private GameObject _standardTurretPrefab;
+    [Header("기본 포탑")]
+    [SerializeField] public GameObject _standardTurretPrefab;
+
+    [Header("미사일 포탑")]
+    [SerializeField] public GameObject _missileTurretPrefab;
+
+    [Header("레이저 포탑")]
+    [SerializeField] public GameObject _laserTurretPrefab;
 
     private GameObject _turretToBuild;
 
@@ -24,11 +30,22 @@ public class BuildManager : MonoBehaviour
 
     private void Start()
     {
-        _turretToBuild = _standardTurretPrefab;
+        if(_standardTurretPrefab == null || _missileTurretPrefab == null || _laserTurretPrefab == null)
+        {
+            CPrint.Warn("포탑 프리팹 열결 확인 필요");
+            return;
+        }
+
+
     }
 
     public GameObject GetTurretToBuild()
     {
         return _turretToBuild;
+    }
+
+    public void SetTurretToBuild(GameObject turret)
+    {
+        _turretToBuild = turret;
     }
 }

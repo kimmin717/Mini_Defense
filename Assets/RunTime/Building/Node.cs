@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.EventSystems;
 
 public class Node : MonoBehaviour
 {
@@ -20,16 +21,30 @@ public class Node : MonoBehaviour
     private GameObject _turret;
     #endregion
 
-    private void Awake()
+    BuildManager _buildManager;
+
+    private void Start()
     {
         _rend = GetComponent<Renderer>();
 
         _startColor = _rend.material.color;
+
+        _buildManager = BuildManager._instance;
     }
 
     // 마우스 커서가 특정 위치에 있을때 한번만 호출 되는 메세지 함수
     private void OnMouseEnter()
     {
+        if(EventSystem.current.IsPointerOverGameObject())
+        {
+            return;
+        }
+
+        if (_buildManager.GetTurretToBuild() == null)
+        {
+            return;
+        }
+
         _rend.material.color = _abideColor;
     }
 
@@ -41,13 +56,23 @@ public class Node : MonoBehaviour
 
     private void OnMouseDown()
     {
+        if (EventSystem.current.IsPointerOverGameObject())
+        {
+            return;
+        }
+
+        if (_buildManager.GetTurretToBuild() == null)
+        {
+            return;
+        }
+
         if (_turret != null)
         {
             CPrint.Log("Can't Build There!");
             return;
         }
 
-        GameObject _turretToBuild = BuildManager._instance.GetTurretToBuild();
+        GameObject _turretToBuild = _buildManager.GetTurretToBuild();
         _turret = Instantiate(_turretToBuild, transform.position + _positioneOffset, transform.rotation);
     }
 
