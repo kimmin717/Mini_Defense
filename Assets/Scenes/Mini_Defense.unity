@@ -1871,7 +1871,7 @@ GameObject:
   - component: {fileID: 244010400}
   - component: {fileID: 244010399}
   m_Layer: 5
-  m_Name: Canvas
+  m_Name: UIMansger
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1953,7 +1953,7 @@ RectTransform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 288087925}
-  - {fileID: 402427918}
+  - {fileID: 316667369}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
@@ -2454,6 +2454,56 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 1.0000002, y: 1, z: 1.0000002}
   m_Center: {x: 0, y: 0, z: 0.00000011920929}
+--- !u!1 &316667368
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 316667369}
+  - component: {fileID: 316667370}
+  m_Layer: 5
+  m_Name: ShopMansger
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &316667369
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 316667368}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 402427918}
+  m_Father: {fileID: 244010402}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 100, y: 100}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &316667370
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 316667368}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bf4065857a1b0d844a9bfc7dbfa17b7b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _shopUI: {fileID: 402427917}
 --- !u!1001 &319241233
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -2728,7 +2778,7 @@ RectTransform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 402427917}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -2736,12 +2786,12 @@ RectTransform:
   - {fileID: 1242983888}
   - {fileID: 1889525921}
   - {fileID: 1408932909}
-  m_Father: {fileID: 244010402}
+  m_Father: {fileID: 316667369}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.059484325, y: 0}
   m_AnchorMax: {x: 0.9451928, y: 0.31379944}
-  m_AnchoredPosition: {x: 0.86138916, y: 0.1461029}
-  m_SizeDelta: {x: 0.71440125, y: -0.7193999}
+  m_AnchoredPosition: {x: 2.6410522, y: -44.355827}
+  m_SizeDelta: {x: 674.7386, y: 74.27867}
   m_Pivot: {x: 0.5, y: 1}
 --- !u!114 &402427919
 MonoBehaviour:
@@ -5699,7 +5749,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0da78f4299f76c34c9663aaad0cc0044, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _missileImpactPrefab: {fileID: 6278605525709561341, guid: cfdc77aeb1d2b6a41a3e0ac2df668feb, type: 3}
+  _missileImpactPrefab: {fileID: 7328218805538265340, guid: cfdc77aeb1d2b6a41a3e0ac2df668feb, type: 3}
   _missileImpactCount: 60
   _missileImpactLifeTime: 2
 --- !u!1001 &721478556
@@ -9841,7 +9891,6 @@ GameObject:
   - component: {fileID: 1242983891}
   - component: {fileID: 1242983890}
   - component: {fileID: 1242983889}
-  - component: {fileID: 1242983893}
   m_Layer: 5
   m_Name: ShopTurret
   m_TagString: Untagged
@@ -9933,7 +9982,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1242983893}
+      - m_Target: {fileID: 316667370}
         m_TargetAssemblyTypeName: Shop, Assembly-CSharp
         m_MethodName: PurchaseTurret
         m_Mode: 1
@@ -9983,18 +10032,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1242983887}
   m_CullTransparentMesh: 1
---- !u!114 &1242983893
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1242983887}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: bf4065857a1b0d844a9bfc7dbfa17b7b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &1244551241
 GameObject:
   m_ObjectHideFlags: 0
@@ -11174,7 +11211,6 @@ GameObject:
   - component: {fileID: 1408932913}
   - component: {fileID: 1408932912}
   - component: {fileID: 1408932911}
-  - component: {fileID: 1408932910}
   m_Layer: 5
   m_Name: ShopLaserTuttet
   m_TagString: Untagged
@@ -11202,18 +11238,6 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &1408932910
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1408932908}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: bf4065857a1b0d844a9bfc7dbfa17b7b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &1408932911
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -11278,7 +11302,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1408932910}
+      - m_Target: {fileID: 316667370}
         m_TargetAssemblyTypeName: Shop, Assembly-CSharp
         m_MethodName: PurchaseLaserTurret
         m_Mode: 1
@@ -15335,7 +15359,6 @@ GameObject:
   - component: {fileID: 1889525925}
   - component: {fileID: 1889525924}
   - component: {fileID: 1889525923}
-  - component: {fileID: 1889525922}
   m_Layer: 5
   m_Name: ShopMissileTurret
   m_TagString: Untagged
@@ -15363,18 +15386,6 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &1889525922
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1889525920}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: bf4065857a1b0d844a9bfc7dbfa17b7b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &1889525923
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -15439,7 +15450,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1889525922}
+      - m_Target: {fileID: 316667370}
         m_TargetAssemblyTypeName: Shop, Assembly-CSharp
         m_MethodName: PurchaseMissileTurret
         m_Mode: 1

@@ -14,6 +14,9 @@ public class Missile : MonoBehaviour
     [Header("데미지")]
     [SerializeField] private float _damage = 20f;
 
+    [Header("폭발 밤위")]
+    [SerializeField] private float _explosionRange = 10f;
+
     [Header("임팩트")]
     [SerializeField] private MissileImpactObjectPool _impactPool;
     #endregion
@@ -46,6 +49,11 @@ public class Missile : MonoBehaviour
             return;
         }
 
+        if(dir != Vector3.zero)
+        {
+            transform.rotation = Quaternion.LookRotation(dir);
+        }
+
         transform.Translate(dir.normalized * distanceThisFrame, Space.World);
 
     }
@@ -57,19 +65,50 @@ public class Missile : MonoBehaviour
             _impactPool.SpawnImpact(transform.position, transform.rotation);
         }
 
-        // 데미지 매커니즘 
-        if (_target != null)
+        if(_explosionRange > 0f)
         {
-            Enemy enemy = _target.GetComponent<Enemy>();
+            Explode();
+        }
 
-            if (enemy != null)
-            {
-                enemy.TakeDamage(_damage);
-            }
-
+        else
+        {
+            Damage(_target);
         }
 
         gameObject.SetActive(false);
     }
 
+    private void Explode()
+    {
+        Collider[] colliders = Physics.OverlapSphere(transform.position, _explosionRange);
+
+       foreach (Collider collider in colliders)
+        {
+            if (collider.CompareTag("Enemy"))
+            {
+                Damage(collider.transform);
+            }
+        }
+    }
+
+    private void Damage (Transform enemyTr)
+    {
+        if(enemyTr == null)
+        { 
+            return; 
+        }
+
+        Enemy enemy = enemyTr.GetComponent<Enemy>();
+
+        if(enemy != null )
+        {
+            enemy.TakeDamage(_damage);
+        }
+    }
+
+    private void OnDrawGizmosSelected()
+    {
+        Gizmos.color = Color.red;
+        Gizmos.DrawSphere(transform.position, _explosionRange);
+    }
 }
