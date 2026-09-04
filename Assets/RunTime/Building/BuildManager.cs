@@ -16,7 +16,7 @@ public class BuildManager : MonoBehaviour
     [Header("레이저 포탑")]
     [SerializeField] public GameObject _laserTurretPrefab;
 
-    private GameObject _turretToBuild;
+    private TurretDesign _turretToBuild;
 
     private void Awake()
     {
@@ -35,16 +35,28 @@ public class BuildManager : MonoBehaviour
             CPrint.Warn("포탑 프리팹 열결 확인 필요");
             return;
         }
-
-
     }
 
-    public GameObject GetTurretToBuild()
+    public bool CanBuild {get { return _turretToBuild != null; } }
+    public bool HoldingMoney { get { return PlayerStats._money >= _turretToBuild._cost; } }
+
+    public void BuildTurretOn(Node node)
     {
-        return _turretToBuild;
+        if(PlayerStats._money < _turretToBuild._cost)
+        {
+            CPrint.Log("포탑을 건설할 돈이 부족합니다.");
+            return;
+        }
+
+        PlayerStats._money -= _turretToBuild._cost;
+
+        GameObject turret = Instantiate(_turretToBuild._turretPrefab, node.GetBuildPosition(), Quaternion.identity);
+        node._turret = turret;
+
+        CPrint.Log($"포탑 건설! 남은 돈 : {PlayerStats._money}");
     }
 
-    public void SetTurretToBuild(GameObject turret)
+    public void SetTurretToBuild(TurretDesign turret)
     {
         _turretToBuild = turret;
     }

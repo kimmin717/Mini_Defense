@@ -10,15 +10,20 @@ public class Node : MonoBehaviour
     [Header("색갈 변경")]
     [SerializeField] private Color _abideColor;
 
+    [Header("색깔 변경(돈 부족)")]
+    [SerializeField] private Color _notMoneyColor;
+
     [Header("위치 설정")]
     [SerializeField] private Vector3 _positioneOffset;
+
+    [Header("옵션")]
+    [SerializeField]public GameObject _turret;
     #endregion
 
     #region 내부변수
     // 마우스 커서가 노드에서 벗어났을때 변경할 노드 색깔
     private Color _startColor;
     private Renderer _rend;
-    private GameObject _turret;
     #endregion
 
     BuildManager _buildManager;
@@ -40,12 +45,21 @@ public class Node : MonoBehaviour
             return;
         }
 
-        if (_buildManager.GetTurretToBuild() == null)
+        if (!_buildManager.CanBuild)
         {
             return;
         }
 
-        _rend.material.color = _abideColor;
+        if (_buildManager.HoldingMoney)
+        {
+            _rend.material.color = _abideColor;
+        }
+
+        else
+        {
+            _rend.material.color = _notMoneyColor;
+        }
+
     }
 
     //  마우스 커서가 특정 위치에서 벗어나면 한번만 호출되는 메세지 함수
@@ -61,7 +75,7 @@ public class Node : MonoBehaviour
             return;
         }
 
-        if (_buildManager.GetTurretToBuild() == null)
+        if (!_buildManager.CanBuild)
         {
             return;
         }
@@ -72,8 +86,12 @@ public class Node : MonoBehaviour
             return;
         }
 
-        GameObject _turretToBuild = _buildManager.GetTurretToBuild();
-        _turret = Instantiate(_turretToBuild, transform.position + _positioneOffset, transform.rotation);
+        _buildManager.BuildTurretOn(this);
+    }
+
+    public Vector3 GetBuildPosition()
+    {
+        return transform.position + _positioneOffset;
     }
 
 }

@@ -25,14 +25,19 @@ public class WaveSpawner : MonoBehaviour
     {
         _countdown -= Time.deltaTime;
 
-        if (_countdown <= 0)
+        _countdown = Mathf.Clamp(_countdown, 0f, Mathf.Infinity);
+
+        if (_WaveCountdownText != null)
         {
-           StartCoroutine(SpawnWave());
+            _WaveCountdownText.text = string.Format("{0:0.0}초", _countdown);
+        }
+
+        if (_countdown <= 0f)
+        {
+            StartCoroutine(SpawnWave());
             _countdown = _timeWaves;
         }
 
-        // UI
-        _WaveCountdownText.text = Mathf.CeilToInt(_countdown).ToString();
     }
 
     // 코루틴을 사용해 적 객체가 겹처서 스폰되는 것을 딜레이 타입을 주어 해결 

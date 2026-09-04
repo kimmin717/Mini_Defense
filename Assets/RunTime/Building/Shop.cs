@@ -6,6 +6,10 @@ using UnityEngine.PlayerLoop;
 
 public class Shop : MonoBehaviour
 {
+    public TurretDesign _standardTurret;
+    public TurretDesign _missileTurret;
+    public TurretDesign _laserTurret;
+
     #region 인스펙터
     [Header("UI")]
     [SerializeField] private GameObject _shopUI;
@@ -45,7 +49,7 @@ public class Shop : MonoBehaviour
         }
     }
 
-    public void PurchaseTurret()
+    private void PurchaseTurret()
     {
         if(!_shopOnOff)
         {
@@ -53,10 +57,10 @@ public class Shop : MonoBehaviour
         }
 
         CPrint.Log("포탑 구입");
-        _buildManager.SetTurretToBuild(_buildManager._standardTurretPrefab);
+        _buildManager.SetTurretToBuild(_standardTurret);
     }
 
-    public void PurchaseMissileTurret()
+    private void PurchaseMissileTurret()
     {
         if (!_shopOnOff)
         {
@@ -64,10 +68,10 @@ public class Shop : MonoBehaviour
         }
 
         CPrint.Log("미사일 포탑 구입");
-        _buildManager.SetTurretToBuild(_buildManager._missileTurretPrefab);
+        _buildManager.SetTurretToBuild(_missileTurret);
     }
 
-    public void PurchaseLaserTurret()
+    private void PurchaseLaserTurret()
     {
         if (!_shopOnOff)
         {
@@ -75,6 +79,6 @@ public class Shop : MonoBehaviour
         }
 
         CPrint.Log("레이저 포탑 구입");
-        _buildManager.SetTurretToBuild(_buildManager._laserTurretPrefab);
+        _buildManager.SetTurretToBuild(_laserTurret);
     }
 }

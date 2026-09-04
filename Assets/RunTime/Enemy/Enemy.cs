@@ -43,7 +43,6 @@ public class Enemy : MonoBehaviour
             return;
         }
 
-        _target = WayPoints._points[0];
     }
 
 
@@ -70,6 +69,7 @@ public class Enemy : MonoBehaviour
     {
         if( _wavePointIndex >= WayPoints._points.Length - 1)
         {
+            Die();
             return;
         }
 

@@ -119,4 +119,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _abideColor: {r: 0.7924528, g: 0.7737629, b: 0.7737629, a: 0}
+  _notMoneyColor: {r: 1, g: 0, b: 0, a: 1}
   _positioneOffset: {x: 0, y: 0.5, z: 0}
+  _turret: {fileID: 0}

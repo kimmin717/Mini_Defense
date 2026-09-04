@@ -66,6 +66,8 @@ public class EnemyObjectPool : MonoBehaviour
 
         _spawnDelayTime -= Time.deltaTime;
 
+        _spawnDelayTime = Mathf.Clamp(_spawnDelayTime, 0f, Mathf.Infinity);
+
         if (_spawnDelayTime <= 0)
         {
             StartCoroutine(SpawnWave());
@@ -76,7 +78,7 @@ public class EnemyObjectPool : MonoBehaviour
         if (_WaveCountdownText != null)
         {
             // UI 
-            _WaveCountdownText.text = Mathf.CeilToInt(_spawnDelayTime).ToString();
+            _WaveCountdownText.text = string.Format("WAVE : {0:0.0}", _spawnDelayTime);
         }
 
         UpdateAliveEnemy();
@@ -136,6 +138,11 @@ public class EnemyObjectPool : MonoBehaviour
         enemy.transform.SetParent(_poolRoot);
 
         _pool.Enqueue(enemy);
+
+        if (_lifeMap.ContainsKey(enemy))
+        {
+            _lifeMap.Remove(enemy);
+        }
     }
 
     private void ReturAll()

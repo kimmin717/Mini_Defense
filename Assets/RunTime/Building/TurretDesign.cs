@@ -3,25 +3,11 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [System.Serializable]
-public class TurretDesign : MonoBehaviour
+public class TurretDesign 
 {
-    #region 인스펙터
-    [Header("포탑")]
-    [SerializeField] private GameObject _turretPrefab;
 
-    [Header("가격")]
-    [SerializeField] private int _cost;
-    #endregion
+    [Header("포탑 가격 설정")]
+    [SerializeField] public GameObject _turretPrefab;
+    [SerializeField] public int _cost;
 
-
-    void Start()
-    {
-        
-    }
-
-    
-    void Update()
-    {
-        
-    }
 }
