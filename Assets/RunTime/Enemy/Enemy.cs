@@ -15,16 +15,30 @@ public class Enemy : MonoBehaviour
     [Header("체력 설정")]
     [Min(0.1f)]
     [SerializeField] private float _enemyHP = 10f;
+
+    [Header("데미지")]
+    [SerializeField] private int _enemyDamage = 1;
+
+    [Header("Drop Money")]
+    [SerializeField] private int _enemyMoney = 10;
     #endregion
 
     #region 내부변수
     private float _temporaryHP;
+    private int _dropMoney;
+    private int _damage;
     #endregion
 
     private void OnEnable()
     {
         // 체력 초기화
         _temporaryHP = _enemyHP;
+
+        // 돈 초기화
+        _dropMoney = _enemyMoney;
+
+        // 데미지 초기화
+        _damage = _enemyDamage;
 
         // 위치 초기화
         _wavePointIndex = 0;
@@ -95,6 +109,23 @@ public class Enemy : MonoBehaviour
     private void Die()
     {
         gameObject.SetActive(false);
+
+        DropMoney();
+    }
+
+    private void DropMoney()
+    {
+        PlayerStats._money += _dropMoney;
+    }
+
+    public void InflictDamage() // 여기 생명력 - 로 낮아지는 거 막아주고
+    {
+        if (PlayerStats._life <= 0)
+        {
+            return;
+        }
+
+        PlayerStats._life -= _damage;
     }
 
 }

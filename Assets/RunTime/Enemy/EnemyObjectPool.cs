@@ -33,6 +33,7 @@ public class EnemyObjectPool : MonoBehaviour
 
     private float _spawnDelayTime = 2f;
     private int _waveIndex = 1;
+    private bool _waitSpawning = false;
     #endregion
 
     void Start()
@@ -64,16 +65,20 @@ public class EnemyObjectPool : MonoBehaviour
             ReturAll();
         }
 
-        _spawnDelayTime -= Time.deltaTime;
-
-        _spawnDelayTime = Mathf.Clamp(_spawnDelayTime, 0f, Mathf.Infinity);
-
-        if (_spawnDelayTime <= 0)
+        if (!_waitSpawning)
         {
-            StartCoroutine(SpawnWave());
-            _spawnDelayTime = _spawnTime;
-        }
+            _spawnDelayTime -= Time.deltaTime;
 
+            _spawnDelayTime = Mathf.Clamp(_spawnDelayTime, 0f, Mathf.Infinity);
+
+            if (_spawnDelayTime <= 0)
+            {
+                StartCoroutine(SpawnWave());
+
+                _spawnDelayTime = _spawnTime;
+            }
+
+        }
         // null 예외 방지
         if (_WaveCountdownText != null)
         {
@@ -87,6 +92,8 @@ public class EnemyObjectPool : MonoBehaviour
 
     private IEnumerator SpawnWave()
     {
+        _waitSpawning = true;
+
         for (int i = 0; i < _waveIndex; i++)
         {
             SpawnEnemy();
@@ -95,6 +102,8 @@ public class EnemyObjectPool : MonoBehaviour
 
         // 적 객체가 순차적으로 더많이 생성 됨
         _waveIndex++;
+        _spawnDelayTime = _spawnTime;
+        _waitSpawning = false;
     }
 
     private void CreatePoolRoot()

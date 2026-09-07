@@ -82,7 +82,9 @@ public class EnemyKillzone : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if(other == null)
+        Enemy enemy = other.GetComponent<Enemy>();
+
+        if (other == null)
         {
             return;
         }
@@ -114,6 +116,11 @@ public class EnemyKillzone : MonoBehaviour
                 CPrint.KV("위치", other.transform.position);
             
             });
+        }
+
+       if (other != null)
+        {
+            enemy.InflictDamage();
         }
 
         other.gameObject.SetActive(false);
