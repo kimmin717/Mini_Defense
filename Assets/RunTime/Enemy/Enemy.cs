@@ -27,7 +27,19 @@ public class Enemy : MonoBehaviour
     private float _temporaryHP;
     private int _dropMoney;
     private int _damage;
+
+    private GameSystem _gameSystem;
     #endregion
+
+    private void Awake()
+    {
+        _gameSystem = FindObjectOfType<GameSystem>();
+
+        if ( _gameSystem == null )
+        {
+            CPrint.Warn("GameSystem을 씬에서 찾을 수 없다.");
+        }
+    }
 
     private void OnEnable()
     {
@@ -124,8 +136,13 @@ public class Enemy : MonoBehaviour
         {
             return;
         }
+        
+        PlayerStats._life = Mathf.Max(0, PlayerStats._life - _damage);
 
-        PlayerStats._life -= _damage;
+        if (PlayerStats._life <= 0 )
+        {
+            _gameSystem.GameOver();
+        }
     }
 
 }
