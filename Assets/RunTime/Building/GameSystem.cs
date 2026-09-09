@@ -3,8 +3,8 @@ using UnityEngine.SceneManagement;
 
 public class GameSystem : MonoBehaviour
 {
-    [Header("메뉴 UI")]
-    [SerializeField] private GameObject _gameTitleUI;
+    [Header("ESC 메뉴 UI")]
+    [SerializeField] private GameObject _gamePauseUI;
 
     [Header("게임 오버 UI")]
     [SerializeField] private GameObject _gameOverUI;
@@ -20,6 +20,19 @@ public class GameSystem : MonoBehaviour
         if( _gameOverUI != null)
         {
             _gameOverUI.SetActive(false);
+        }
+
+        if (_gamePauseUI != null)
+        { 
+            _gamePauseUI.SetActive(false);
+        }
+    }
+
+    private void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.Escape))
+        {
+            GamePause();
         }
     }
 
@@ -52,11 +65,37 @@ public class GameSystem : MonoBehaviour
         SceneManager.LoadScene("MainMenu");
     }
 
-    // 게임 종료
-    private void GameEnd()
+    public void GameExit()
     {
+        CPrint.Log("게임을 종료합니다.");
+
         Time.timeScale = 1f;
 
         Application.Quit();
+    }
+
+    public void GamePause()
+    {
+        if(Time.timeScale == 0f)
+        {
+            Time.timeScale = 1f;
+
+            if (_gamePauseUI != null)
+            {
+                _gamePauseUI.SetActive(false);
+            }
+        }
+
+        else
+        {
+            Time.timeScale = 0f;
+
+            if (_gamePauseUI != null)
+            {
+                _gamePauseUI.SetActive(true);
+            }
+        }
+
+        
     }
 }

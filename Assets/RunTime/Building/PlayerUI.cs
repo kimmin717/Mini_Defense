@@ -12,8 +12,6 @@ public class PlayerUI : MonoBehaviour
 
     private void Update()
     {
-        //_moneyText.text = "$" + PlayerStats._money.ToString();
-
         _moneyText.text = $"$ {PlayerStats._money.ToString()}";
 
         _lifeText.text = $"LifePoint : {PlayerStats._life.ToString()}";

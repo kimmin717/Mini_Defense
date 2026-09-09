@@ -130,7 +130,7 @@ public class Enemy : MonoBehaviour
         PlayerStats._money += _dropMoney;
     }
 
-    public void InflictDamage() // 여기 생명력 - 로 낮아지는 거 막아주고
+    public void InflictDamage() 
     {
         if (PlayerStats._life <= 0)
         {
