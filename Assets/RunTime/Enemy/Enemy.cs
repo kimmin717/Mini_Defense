@@ -16,6 +16,9 @@ public class Enemy : MonoBehaviour
     [Min(0.1f)]
     [SerializeField] private float _enemyHP = 10f;
 
+    [Header("MaxHP 설정")]
+    [SerializeField] private float _enemyMaxHP = 30f;
+
     [Header("데미지")]
     [SerializeField] private int _enemyDamage = 1;
 
@@ -43,15 +46,6 @@ public class Enemy : MonoBehaviour
 
     private void OnEnable()
     {
-        // 체력 초기화
-        _temporaryHP = _enemyHP;
-
-        // 돈 초기화
-        _dropMoney = _enemyMoney;
-
-        // 데미지 초기화
-        _damage = _enemyDamage;
-
         // 위치 초기화
         _wavePointIndex = 0;
 
@@ -59,6 +53,15 @@ public class Enemy : MonoBehaviour
         {
             _target = WayPoints._points[0];
         }
+
+        // 돈 초기화
+        _dropMoney = _enemyMoney;
+
+        // 데미지 초기화
+        _damage = _enemyDamage;
+
+        // 체력 초기화
+        _temporaryHP = _enemyHP;
     }
 
     void Start()
@@ -143,6 +146,25 @@ public class Enemy : MonoBehaviour
         {
             _gameSystem.GameOver();
         }
+    }
+
+    public void InitHP(int waveIndex)
+    {
+        float calculatedHP = 10f + ((waveIndex - 1) * 3f);
+
+        if (calculatedHP > _enemyMaxHP)
+        {
+            _enemyHP = _enemyMaxHP;
+        }
+
+        else
+        {
+            _enemyHP = calculatedHP;
+        }
+
+        _temporaryHP = _enemyHP;
+
+        CPrint.Log($"설정완료 최대 HP : {_temporaryHP}");
     }
 
 }

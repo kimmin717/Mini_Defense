@@ -84,7 +84,7 @@ public class Node : MonoBehaviour
         {
             CPrint.Log("Can't Build There!");
             return;
-        }
+        }    
 
         _buildManager.BuildTurretOn(this);
     }

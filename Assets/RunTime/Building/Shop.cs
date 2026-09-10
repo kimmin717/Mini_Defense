@@ -37,6 +37,11 @@ public class Shop : MonoBehaviour
         {
             ShopOnOff();
         }
+
+        if (Input.GetKeyDown(KeyCode.Escape))
+        {
+            ShopStop();
+        }
     }
 
     private void ShopOnOff()
@@ -47,6 +52,16 @@ public class Shop : MonoBehaviour
         {
             _shopUI.SetActive(_shopOnOff);
         }
+
+        if(!_shopOnOff && _buildManager != null)
+        {
+            _buildManager.SetTurretToBuild(null);
+        }
+    }
+
+    private void ShopStop()
+    {
+        _buildManager.SetTurretToBuild(null);
     }
 
     private void PurchaseTurret()

@@ -6,8 +6,6 @@ using UnityEngine;
 public class EnemyKillzone : MonoBehaviour
 {
     #region 인스펙터
-    [Header("트리거 토글")]
-    [SerializeField] private KeyCode _togglekey = KeyCode.K;
     [SerializeField] private bool _startEnabled = true;
 
     [Header("필터")]
@@ -44,40 +42,6 @@ public class EnemyKillzone : MonoBehaviour
 
         CPrint.KV("트리거", _targetCollider.enabled);
         CPrint.Line();
-    }
-
-    
-    void Update()
-    {
-        if(Input.GetKeyDown(_togglekey))
-        {
-            ToggleKillzone();
-        }
-    }
-
-    private void ToggleKillzone()
-    {
-        if(_targetCollider == null)
-        {
-            CPrint.Warn("BoxCollider 컴포넌트를 찾을 수 없습니다. 확인 필요");
-
-            return;
-        }
-
-        _targetCollider.enabled = !_targetCollider.enabled;
-
-        if(_printLog)
-        {
-            if(_targetCollider.enabled)
-            {
-                CPrint.Success("킬존 ON");
-            }
-
-            else
-            {
-                CPrint.Warn("킬존 OFF");
-            }
-        }
     }
 
     private void OnTriggerEnter(Collider other)

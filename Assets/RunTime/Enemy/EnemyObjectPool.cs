@@ -18,11 +18,11 @@ public class EnemyObjectPool : MonoBehaviour
     [Header("오브젝트 풀")]
     [SerializeField] private int _prewarmCount = 60;
 
-    [Header("입력")]
-    [SerializeField] private KeyCode _clearKey = KeyCode.Backspace;
+    [Header("웨이브 카운트 다운 UI")]
+    [SerializeField] private TextMeshProUGUI _waveCountdownText;
 
-    [Header("UI")]
-    [SerializeField] private TextMeshProUGUI _WaveCountdownText;
+    [Header("웨이브 라운드 UI")]
+    [SerializeField] private TextMeshProUGUI _WaveRoundText;
     #endregion
 
     #region 내부변수
@@ -60,11 +60,6 @@ public class EnemyObjectPool : MonoBehaviour
 
     void Update()
     {
-        if (Input.GetKeyDown(_clearKey))
-        {
-            ReturAll();
-        }
-
         if (!_waitSpawning)
         {
             _spawnDelayTime -= Time.deltaTime;
@@ -80,10 +75,15 @@ public class EnemyObjectPool : MonoBehaviour
 
         }
         // null 예외 방지
-        if (_WaveCountdownText != null)
+        if (_waveCountdownText != null)
         {
             // UI 
-            _WaveCountdownText.text = string.Format("WAVE : {0:0.0}", _spawnDelayTime);
+            _waveCountdownText.text = string.Format("Next Spawn : {0:0.0}", _spawnDelayTime);
+        }
+
+        if (_WaveRoundText != null)
+        {
+            _WaveRoundText.text = $"ROUND : {_waveIndex}";
         }
 
         UpdateAliveEnemy();
@@ -154,27 +154,6 @@ public class EnemyObjectPool : MonoBehaviour
         }
     }
 
-    private void ReturAll()
-    {
-        for (int i = _aliveEnemy.Count - 1; i >=0; i--)
-        {
-            GameObject enemy = _aliveEnemy[i];
-
-            if (enemy == null)
-            {  
-                continue; 
-            }
-
-            ReturnToPool(enemy);
-        }
-
-        _aliveEnemy.Clear();
-        _lifeMap.Clear();
-
-        CPrint.Success($"전체 enemy 반환 / Pool = {_pool.Count}");
-
-    }
-
     private void UpdateAliveEnemy()
     {
         for (int i = _aliveEnemy.Count - 1; i >= 0; i--)
@@ -224,6 +203,12 @@ public class EnemyObjectPool : MonoBehaviour
         // 풀 안에서는 루트 하위에 정리되어 있다.
         enemy.transform.SetParent(null);
         enemy.transform.SetPositionAndRotation( _spawnPoint.position, Quaternion.identity);
+
+        Enemy enemyComponent = enemy.GetComponent<Enemy>();
+        if (enemyComponent != null)
+        {
+            enemyComponent.InitHP(_waveIndex);
+        }
 
         // 풀에서 꺼낸 객체를 다시 사용
         enemy.SetActive(true);
