@@ -94,8 +94,6 @@ public class GameSystem : MonoBehaviour
             {
                 _gamePauseUI.SetActive(true);
             }
-        }
-
-        
+        }       
     }
 }
